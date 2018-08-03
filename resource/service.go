@@ -6,11 +6,12 @@ import (
 )
 
 type Service struct {
-	Title   string  `json:"title,omitempty" yaml:"title,omitempty"`
-	Meta    meta    `json:"meta,omitempty" yaml:"meta,omitempty"`
-	Service string  `json:"-" yaml:"-"`
-	Enabled matcher `json:"enabled" yaml:"enabled"`
-	Running matcher `json:"running" yaml:"running"`
+	Title    string  `json:"title,omitempty" yaml:"title,omitempty"`
+	Meta     meta    `json:"meta,omitempty" yaml:"meta,omitempty"`
+	Service  string  `json:"-" yaml:"-"`
+	Enabled  matcher `json:"enabled" yaml:"enabled"`
+	Running  matcher `json:"running" yaml:"running"`
+	RunLevel string  `json:"runlevel" yaml:"runlevel"`
 }
 
 func (s *Service) ID() string      { return s.Service }
@@ -21,7 +22,7 @@ func (s *Service) GetMeta() meta    { return s.Meta }
 
 func (s *Service) Validate(sys *system.System) []TestResult {
 	skip := false
-	sysservice := sys.NewService(s.Service, sys, util.Config{})
+	sysservice := sys.NewService(s.Service, sys, util.Config{RunLevel: s.RunLevel})
 
 	var results []TestResult
 	results = append(results, ValidateValue(s, "enabled", s.Enabled, sysservice.Enabled, skip))

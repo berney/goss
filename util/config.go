@@ -16,6 +16,7 @@ type Config struct {
 	Server            string
 	Username          string
 	Password          string
+	RunLevel          string `default:"sysinit"`
 }
 
 type OutputConfig struct {
